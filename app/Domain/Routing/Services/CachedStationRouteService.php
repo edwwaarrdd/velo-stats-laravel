@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Routing\Services;
 
-use App\Contracts\RouteService;
+use App\Domain\Routing\Contracts\RouteService;
 use App\Domain\Stations\Models\Station;
-use App\Enums\TravelMode;
-use App\Models\StationRoute;
+use App\Domain\Routing\Enums\TravelMode;
+use App\Domain\Routing\Models\StationRoute;
 use App\ValueObjects\Coordinate;
-use App\ValueObjects\Route;
+use App\Domain\Routing\ValueObjects\Route;
 
 /**
  * Calculates routes between stations, caching results so a route between the

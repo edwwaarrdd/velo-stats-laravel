@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ValueObjects;
+namespace App\Domain\Routing\ValueObjects;
 
 readonly class Route
 {

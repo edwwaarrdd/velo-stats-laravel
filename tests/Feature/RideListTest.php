@@ -1,9 +1,9 @@
 <?php
 
+use App\Domain\Routing\Enums\TravelMode;
+use App\Domain\Routing\Models\StationRoute;
 use App\Domain\Stations\Models\Station;
-use App\Enums\TravelMode;
 use App\Models\Ride;
-use App\Models\StationRoute;
 use App\Models\WeatherRecord;
 
 function ride(array $attributes = []): Ride

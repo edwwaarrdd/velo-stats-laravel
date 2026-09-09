@@ -1,9 +1,9 @@
 <?php
 
+use App\Domain\Routing\Enums\TravelMode;
+use App\Domain\Routing\Models\StationRoute;
+use App\Domain\Routing\Services\CachedStationRouteService;
 use App\Domain\Stations\Models\Station;
-use App\Enums\TravelMode;
-use App\Models\StationRoute;
-use App\Services\CachedStationRouteService;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function (): void {

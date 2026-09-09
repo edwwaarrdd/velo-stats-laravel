@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Routing\Models;
 
 use App\Domain\Stations\Models\Station;
-use App\Enums\TravelMode;
+use App\Domain\Routing\Enums\TravelMode;
 use Database\Factories\StationRouteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

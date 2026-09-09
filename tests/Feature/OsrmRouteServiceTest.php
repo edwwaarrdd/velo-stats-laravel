@@ -1,7 +1,7 @@
 <?php
 
-use App\Contracts\RouteService;
-use App\Enums\TravelMode;
+use App\Domain\Routing\Contracts\RouteService;
+use App\Domain\Routing\Enums\TravelMode;
 use App\ValueObjects\Coordinate;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;

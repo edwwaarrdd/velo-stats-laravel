@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Routing\Services;
 
-use App\Contracts\RouteService;
-use App\Enums\TravelMode;
+use App\Domain\Routing\Contracts\RouteService;
+use App\Domain\Routing\Enums\TravelMode;
 use App\ValueObjects\Coordinate;
-use App\ValueObjects\Route;
+use App\Domain\Routing\ValueObjects\Route;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 

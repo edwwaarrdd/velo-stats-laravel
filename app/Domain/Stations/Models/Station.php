@@ -2,7 +2,7 @@
 
 namespace App\Domain\Stations\Models;
 
-use App\Models\StationRoute;
+use App\Domain\Routing\Models\StationRoute;
 use Database\Factories\StationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

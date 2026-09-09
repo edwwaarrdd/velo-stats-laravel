@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Domain\Routing\Contracts;
 
-use App\Enums\TravelMode;
+use App\Domain\Routing\Enums\TravelMode;
 use App\ValueObjects\Coordinate;
-use App\ValueObjects\Route;
+use App\Domain\Routing\ValueObjects\Route;
 
 interface RouteService
 {

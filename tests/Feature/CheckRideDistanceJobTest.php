@@ -1,9 +1,9 @@
 <?php
 
+use App\Domain\Routing\Models\StationRoute;
 use App\Domain\Stations\Models\Station;
 use App\Jobs\CheckRideDistance;
 use App\Models\Ride;
-use App\Models\StationRoute;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
