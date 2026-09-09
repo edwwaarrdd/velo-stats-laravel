@@ -12,9 +12,14 @@ class LoadStations extends Command
 
     protected $description = 'Fetch Velo Antwerp station information and save it to the database.';
 
-    public function handle(StationInformationService $stations): int
+    public function __construct(private readonly StationInformationService $stations)
     {
-        $fetched = $stations->fetchStations();
+        parent::__construct();
+    }
+
+    public function handle(): int
+    {
+        $fetched = $this->stations->fetchStations();
 
         $createdCount = 0;
         $updatedCount = 0;

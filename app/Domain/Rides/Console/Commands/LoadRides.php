@@ -13,13 +13,18 @@ class LoadRides extends Command
 
     protected $description = 'Load customer ride history from a JSON export into the database.';
 
-    public function handle(RideDataSource $rides): int
+    public function __construct(private readonly RideDataSource $rides)
+    {
+        parent::__construct();
+    }
+
+    public function handle(): int
     {
         $path = $this->option('path');
 
-        if ($path !== null) {
-            $rides = new JsonFileRideService($path);
-        }
+        $rides = $path === null
+            ? $this->rides
+            : new JsonFileRideService($path);
 
         $fetched = $rides->fetchRides();
 
