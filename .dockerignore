@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.git
+.github
+node_modules
+storage/logs/*.log
+tests
+vendor
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
