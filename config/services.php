@@ -7,32 +7,29 @@ return [
     | Third Party Services
     |--------------------------------------------------------------------------
     |
-    | This file is for storing the credentials for third party services such
-    | as Resend, Postmark, AWS, and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
+    | This file is for storing the credentials and endpoints for the third
+    | party services this application talks to. All three feeds below are
+    | public and unauthenticated.
     |
     */
 
-    'postmark' => [
-        'key' => env('POSTMARK_API_KEY'),
+    'velo_antwerp' => [
+        'station_information_url' => env(
+            'VELO_ANTWERP_STATION_INFORMATION_URL',
+            'https://gbfs.smartbike.com/antwerp/1.0/en/station_information.json',
+        ),
     ],
 
-    'resend' => [
-        'key' => env('RESEND_API_KEY'),
+    'osrm' => [
+        'base_url' => env('OSRM_BASE_URL', 'https://router.project-osrm.org'),
     ],
 
-    'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'open_meteo' => [
+        'archive_url' => env('OPEN_METEO_ARCHIVE_URL', 'https://archive-api.open-meteo.com/v1/archive'),
     ],
 
-    'slack' => [
-        'notifications' => [
-            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
-            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
-        ],
+    'rides' => [
+        'json_path' => env('RIDES_JSON_PATH', 'data/rides.json'),
     ],
 
 ];
