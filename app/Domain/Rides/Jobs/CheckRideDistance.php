@@ -2,10 +2,10 @@
 
 namespace App\Domain\Rides\Jobs;
 
+use App\Domain\Rides\Models\Ride;
 use App\Domain\Routing\Enums\TravelMode;
 use App\Domain\Routing\Services\CachedStationRouteService;
 use App\Domain\Stations\Models\Station;
-use App\Domain\Rides\Models\Ride;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;

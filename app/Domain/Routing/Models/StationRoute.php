@@ -2,8 +2,8 @@
 
 namespace App\Domain\Routing\Models;
 
-use App\Domain\Stations\Models\Station;
 use App\Domain\Routing\Enums\TravelMode;
+use App\Domain\Stations\Models\Station;
 use Database\Factories\StationRouteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

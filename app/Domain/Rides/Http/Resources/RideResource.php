@@ -2,8 +2,8 @@
 
 namespace App\Domain\Rides\Http\Resources;
 
-use App\Domain\Weather\Http\Resources\WeatherResource;
 use App\Domain\Rides\Models\Ride;
+use App\Domain\Weather\Http\Resources\WeatherResource;
 use App\Support\ApiDateTime;
 use App\Support\Round;
 use Illuminate\Http\Request;

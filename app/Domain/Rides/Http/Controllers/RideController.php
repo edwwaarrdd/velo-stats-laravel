@@ -3,11 +3,11 @@
 namespace App\Domain\Rides\Http\Controllers;
 
 use App\Domain\Rides\Http\Resources\RideResource;
-use App\Http\Controllers\Controller;
 use App\Domain\Rides\Models\Ride;
 use App\Domain\Rides\Services\RideCostCalculator;
 use App\Domain\Rides\Services\RideRouteSubquery;
 use App\Domain\Rides\Services\RideSummaryCalculator;
+use App\Http\Controllers\Controller;
 use App\Support\ApiJson;
 use Illuminate\Http\JsonResponse;
 
