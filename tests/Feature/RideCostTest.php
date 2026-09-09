@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Ride;
+use App\Domain\Rides\Models\Ride;
 
 it('reports no cost breakdown when there are no rides', function (): void {
     $this->getJson('/rides/cost')->assertOk()->assertExactJson([

@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\JsonFileRideService;
+use App\Domain\Rides\Services\JsonFileRideService;
 
 function writeRidesExport(array $rides): string
 {

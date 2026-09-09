@@ -1,9 +1,9 @@
 <?php
 
+use App\Domain\Rides\Jobs\CheckRideDistance;
+use App\Domain\Rides\Models\Ride;
 use App\Domain\Weather\Jobs\CheckRideWeather;
-use App\Jobs\CheckRideDistance;
 use App\Jobs\LogTestMessage;
-use App\Models\Ride;
 use Illuminate\Support\Facades\Queue;
 
 beforeEach(fn () => Queue::fake());

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Rides\Services;
 
-use App\Contracts\RideDataSource;
+use App\Domain\Rides\Contracts\RideDataSource;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use RuntimeException;

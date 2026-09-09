@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domain\Rides\Http\Controllers;
 
-use App\Http\Resources\RideResource;
-use App\Models\Ride;
-use App\Services\RideCostCalculator;
-use App\Services\RideRouteSubquery;
-use App\Services\RideSummaryCalculator;
+use App\Domain\Rides\Http\Resources\RideResource;
+use App\Http\Controllers\Controller;
+use App\Domain\Rides\Models\Ride;
+use App\Domain\Rides\Services\RideCostCalculator;
+use App\Domain\Rides\Services\RideRouteSubquery;
+use App\Domain\Rides\Services\RideSummaryCalculator;
 use App\Support\ApiJson;
 use Illuminate\Http\JsonResponse;
 

@@ -1,8 +1,8 @@
 <?php
 
+use App\Domain\Rides\Models\Ride;
 use App\Domain\Weather\Models\WeatherRecord;
 use App\Domain\Weather\Services\CachedRideWeatherService;
-use App\Models\Ride;
 use App\ValueObjects\Coordinate;
 use Illuminate\Support\Facades\Http;
 

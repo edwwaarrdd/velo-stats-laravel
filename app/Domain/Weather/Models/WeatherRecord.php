@@ -2,7 +2,7 @@
 
 namespace App\Domain\Weather\Models;
 
-use App\Models\Ride;
+use App\Domain\Rides\Models\Ride;
 use Database\Factories\WeatherRecordFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

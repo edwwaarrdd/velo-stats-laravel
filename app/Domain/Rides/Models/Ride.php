@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Rides\Models;
 
 use App\Domain\Weather\Models\WeatherRecord;
 use Database\Factories\RideFactory;

@@ -1,9 +1,9 @@
 <?php
 
+use App\Domain\Rides\Models\Ride;
 use App\Domain\Routing\Enums\TravelMode;
 use App\Domain\Routing\Models\StationRoute;
 use App\Domain\Stations\Models\Station;
-use App\Models\Ride;
 
 function cachedBikeRoute(string $originCode, string $destinationCode, float $distanceMeters): void
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Rides\Services;
 
 use App\Domain\Routing\Enums\TravelMode;
 use App\Domain\Routing\Models\StationRoute;

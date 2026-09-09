@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Domain\Rides\Console\Commands;
 
-use App\Jobs\CheckRideDistance;
-use App\Models\Ride;
+use App\Domain\Rides\Jobs\CheckRideDistance;
+use App\Domain\Rides\Models\Ride;
 use Illuminate\Console\Command;
 
 class CheckRideDistances extends Command

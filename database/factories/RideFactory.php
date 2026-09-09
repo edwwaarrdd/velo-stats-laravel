@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Ride;
+use App\Domain\Rides\Models\Ride;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

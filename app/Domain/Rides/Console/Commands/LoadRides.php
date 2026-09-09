@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Domain\Rides\Console\Commands;
 
-use App\Contracts\RideDataSource;
-use App\Models\Ride;
-use App\Services\JsonFileRideService;
+use App\Domain\Rides\Contracts\RideDataSource;
+use App\Domain\Rides\Models\Ride;
+use App\Domain\Rides\Services\JsonFileRideService;
 use Illuminate\Console\Command;
 
 class LoadRides extends Command

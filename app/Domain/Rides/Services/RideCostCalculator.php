@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Rides\Services;
 
-use App\Models\Ride;
+use App\Domain\Rides\Models\Ride;
 use App\Support\ApiDateTime;
 use App\Support\Round;
 use Illuminate\Support\Carbon;

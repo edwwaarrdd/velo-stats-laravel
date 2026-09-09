@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Ride;
+use App\Domain\Rides\Models\Ride;
 
 function ridePayload(int $id, string $checkoutTime): array
 {
