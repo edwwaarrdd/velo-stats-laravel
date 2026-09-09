@@ -46,14 +46,19 @@ class RideResource extends JsonResource
 
     /**
      * The ride's average speed in km/h, or null when the distance is unknown.
+     *
+     * This divides by the exact ride time rather than the `duration` field,
+     * which truncates to whole minutes and so overstates the speed.
      */
     private function speedKmh(): ?float
     {
-        if ($this->distance_meters === null || $this->duration === 0) {
+        $seconds = $this->actualDurationSeconds();
+
+        if ($this->distance_meters === null || $seconds === null || $seconds <= 0.0) {
             return null;
         }
 
-        return Round::money(($this->distance_meters / 1000) / ($this->duration / 60));
+        return Round::money(($this->distance_meters / 1000) / ($seconds / 3600));
     }
 
     /**

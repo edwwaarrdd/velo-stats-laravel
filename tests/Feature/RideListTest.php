@@ -97,7 +97,7 @@ it('returns every ride field, with distance, speed, expected ride time and weath
                 'destination_slot_id' => '23',
                 'checkin_time' => '2026-09-06T09:05:30Z',
                 'distance_meters' => 1500.0,
-                'speed_kmh' => 9.0,
+                'speed_kmh' => 10.63,
                 'expected_duration_seconds' => 400.0,
                 'actual_duration_seconds' => 508.0,
                 'duration_vs_expected_seconds' => 108.0,
@@ -165,9 +165,14 @@ it('ignores routes cached for another travel mode', function (): void {
     expect($this->getJson('/rides')->json('results.0.distance_meters'))->toBeNull();
 });
 
-it('returns a null speed when the ride has no duration', function (): void {
+it('returns a null speed when no time passed between check-out and check-in', function (): void {
     bikeRouteBetween('021', '041', 1500.0);
-    ride(['origin_station_code' => '021', 'destination_station_code' => '041', 'duration' => 0]);
+    ride([
+        'origin_station_code' => '021',
+        'destination_station_code' => '041',
+        'checkout_time' => '2026-09-06 08:57:00',
+        'checkin_time' => '2026-09-06 08:57:00',
+    ]);
 
     $result = $this->getJson('/rides')->json('results.0');
 
@@ -177,8 +182,28 @@ it('returns a null speed when the ride has no duration', function (): void {
 
 it('rounds the speed to two decimals', function (): void {
     bikeRouteBetween('021', '041', 2345.0);
-    ride(['origin_station_code' => '021', 'destination_station_code' => '041', 'duration' => 7]);
+    ride([
+        'origin_station_code' => '021',
+        'destination_station_code' => '041',
+        'checkout_time' => '2026-09-06 08:00:00',
+        'checkin_time' => '2026-09-06 08:06:59',
+    ]);
 
-    // 2.345 km in 7 minutes is 20.1_ km/h.
-    expect($this->getJson('/rides')->json('results.0.speed_kmh'))->toBe(20.1);
+    // 2.345 km in 419 seconds is 20.14_ km/h.
+    expect($this->getJson('/rides')->json('results.0.speed_kmh'))->toBe(20.15);
+});
+
+it('bases the speed on the exact seconds rather than the rounded duration', function (): void {
+    bikeRouteBetween('021', '041', 1742.4, 248.1);
+    ride([
+        'origin_station_code' => '021',
+        'destination_station_code' => '041',
+        // The stored duration truncates 4m29s to 4 whole minutes, which would
+        // overstate the speed as 26.14 km/h.
+        'duration' => 4,
+        'checkout_time' => '2026-09-06 08:00:00',
+        'checkin_time' => '2026-09-06 08:04:29',
+    ]);
+
+    expect($this->getJson('/rides')->json('results.0.speed_kmh'))->toBe(23.32);
 });
