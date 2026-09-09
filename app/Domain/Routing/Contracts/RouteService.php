@@ -3,8 +3,8 @@
 namespace App\Domain\Routing\Contracts;
 
 use App\Domain\Routing\Enums\TravelMode;
-use App\ValueObjects\Coordinate;
 use App\Domain\Routing\ValueObjects\Route;
+use App\Support\Coordinate;
 
 interface RouteService
 {

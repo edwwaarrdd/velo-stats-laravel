@@ -3,8 +3,8 @@
 namespace App\Domain\Weather\Services;
 
 use App\Domain\Weather\Contracts\WeatherService;
-use App\ValueObjects\Coordinate;
 use App\Domain\Weather\ValueObjects\WeatherObservation;
+use App\Support\Coordinate;
 use DateTimeInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;

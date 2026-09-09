@@ -2,7 +2,7 @@
 
 use App\Domain\Routing\Contracts\RouteService;
 use App\Domain\Routing\Enums\TravelMode;
-use App\ValueObjects\Coordinate;
+use App\Support\Coordinate;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 

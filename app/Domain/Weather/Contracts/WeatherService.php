@@ -2,8 +2,8 @@
 
 namespace App\Domain\Weather\Contracts;
 
-use App\ValueObjects\Coordinate;
 use App\Domain\Weather\ValueObjects\WeatherObservation;
+use App\Support\Coordinate;
 use DateTimeInterface;
 
 interface WeatherService

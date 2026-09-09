@@ -6,7 +6,7 @@ use App\Domain\Rides\Models\Ride;
 use App\Domain\Weather\Contracts\WeatherService;
 use App\Domain\Weather\Models\WeatherRecord;
 use App\Domain\Weather\ValueObjects\WeatherObservation;
-use App\ValueObjects\Coordinate;
+use App\Support\Coordinate;
 
 /**
  * Fetches the weather for a ride's checkin time and origin station, caching

@@ -3,7 +3,7 @@
 use App\Domain\Rides\Models\Ride;
 use App\Domain\Weather\Models\WeatherRecord;
 use App\Domain\Weather\Services\CachedRideWeatherService;
-use App\ValueObjects\Coordinate;
+use App\Support\Coordinate;
 use Illuminate\Support\Facades\Http;
 
 function fakeArchive(float $temperature): void

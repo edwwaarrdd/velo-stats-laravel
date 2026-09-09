@@ -3,11 +3,11 @@
 namespace App\Domain\Routing\Services;
 
 use App\Domain\Routing\Contracts\RouteService;
-use App\Domain\Stations\Models\Station;
 use App\Domain\Routing\Enums\TravelMode;
 use App\Domain\Routing\Models\StationRoute;
-use App\ValueObjects\Coordinate;
 use App\Domain\Routing\ValueObjects\Route;
+use App\Domain\Stations\Models\Station;
+use App\Support\Coordinate;
 
 /**
  * Calculates routes between stations, caching results so a route between the

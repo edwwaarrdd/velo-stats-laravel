@@ -4,8 +4,8 @@ namespace App\Domain\Routing\Services;
 
 use App\Domain\Routing\Contracts\RouteService;
 use App\Domain\Routing\Enums\TravelMode;
-use App\ValueObjects\Coordinate;
 use App\Domain\Routing\ValueObjects\Route;
+use App\Support\Coordinate;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
