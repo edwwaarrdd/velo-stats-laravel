@@ -17,10 +17,7 @@ class JsonFileRideService implements RideDataSource
      */
     private const RIDE_DATETIME_FORMAT = 'Y-m-d H:i:s';
 
-    public function __construct(private readonly string $path)
-    {
-        //
-    }
+    public function __construct(private readonly string $path) {}
 
     /**
      * @return Collection<int, array<string, mixed>>

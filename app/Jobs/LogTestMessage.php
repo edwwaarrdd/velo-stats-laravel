@@ -13,10 +13,7 @@ class LogTestMessage implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(private readonly string $message)
-    {
-        //
-    }
+    public function __construct(private readonly string $message) {}
 
     public function handle(): void
     {

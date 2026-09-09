@@ -10,9 +10,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
-/**
- * Fetches historical weather using the free Open-Meteo archive API.
- */
 class OpenMeteoWeatherService implements WeatherService
 {
     /**
@@ -34,10 +31,7 @@ class OpenMeteoWeatherService implements WeatherService
         'weather_code',
     ];
 
-    public function __construct(private readonly string $archiveUrl)
-    {
-        //
-    }
+    public function __construct(private readonly string $archiveUrl) {}
 
     public function getWeather(Coordinate $location, DateTimeInterface $at): WeatherObservation
     {

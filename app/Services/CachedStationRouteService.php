@@ -15,10 +15,7 @@ use App\ValueObjects\Route;
  */
 class CachedStationRouteService
 {
-    public function __construct(private readonly RouteService $routeService)
-    {
-        //
-    }
+    public function __construct(private readonly RouteService $routeService) {}
 
     public function getRoute(Station $origin, Station $destination, TravelMode $mode): Route
     {

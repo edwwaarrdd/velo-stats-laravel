@@ -11,10 +11,7 @@ use Illuminate\Support\Facades\Http;
  */
 class VeloAntwerpStationInformationService implements StationInformationService
 {
-    public function __construct(private readonly string $url)
-    {
-        //
-    }
+    public function __construct(private readonly string $url) {}
 
     /**
      * @return Collection<string, array<string, mixed>>

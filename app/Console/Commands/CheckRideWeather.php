@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Jobs\CheckRideWeather as CheckRideWeatherJob;
 use App\Models\Ride;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 
 class CheckRideWeather extends Command
 {
@@ -18,7 +19,7 @@ class CheckRideWeather extends Command
         $dispatchedCount = 0;
 
         Ride::query()
-            ->unless($force, fn ($query) => $query->whereNull('weather_checked_at'))
+            ->unless($force, fn (Builder $query) => $query->whereNull('weather_checked_at'))
             ->each(function (Ride $ride) use ($force, &$dispatchedCount): void {
                 CheckRideWeatherJob::dispatch($ride->ride_id, $force);
                 $dispatchedCount++;

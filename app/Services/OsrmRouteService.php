@@ -9,15 +9,9 @@ use App\ValueObjects\Route;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
-/**
- * Calculates routes using the public OSRM routing API.
- */
 class OsrmRouteService implements RouteService
 {
-    public function __construct(private readonly string $baseUrl)
-    {
-        //
-    }
+    public function __construct(private readonly string $baseUrl) {}
 
     public function getRoute(Coordinate $origin, Coordinate $destination, TravelMode $mode): Route
     {

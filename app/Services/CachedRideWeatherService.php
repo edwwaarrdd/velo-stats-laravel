@@ -14,10 +14,7 @@ use App\ValueObjects\WeatherObservation;
  */
 class CachedRideWeatherService
 {
-    public function __construct(private readonly WeatherService $weatherService)
-    {
-        //
-    }
+    public function __construct(private readonly WeatherService $weatherService) {}
 
     public function getWeather(Ride $ride, Coordinate $location, bool $force = false): WeatherObservation
     {
