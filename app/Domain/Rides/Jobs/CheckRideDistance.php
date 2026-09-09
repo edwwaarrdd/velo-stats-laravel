@@ -8,7 +8,7 @@ use App\Domain\Routing\Services\CachedStationRouteService;
 use App\Domain\Stations\Models\Station;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
 
 /**
  * Calculates and caches the cycling distance between a ride's origin and
@@ -29,7 +29,7 @@ class CheckRideDistance implements ShouldQueue
         $this->onQueue(self::QUEUE);
     }
 
-    public function handle(CachedStationRouteService $routeService): void
+    public function handle(CachedStationRouteService $routeService, LoggerInterface $logger): void
     {
         $ride = Ride::query()->findOrFail($this->rideId);
 
@@ -41,7 +41,7 @@ class CheckRideDistance implements ShouldQueue
         $destination = Station::query()->find($ride->destination_station_code);
 
         if ($origin === null || $destination === null) {
-            Log::error("Cannot check distance for ride {$this->rideId}: unknown station code(s) {$ride->origin_station_code} / {$ride->destination_station_code}");
+            $logger->error("Cannot check distance for ride {$this->rideId}: unknown station code(s) {$ride->origin_station_code} / {$ride->destination_station_code}");
 
             return;
         }

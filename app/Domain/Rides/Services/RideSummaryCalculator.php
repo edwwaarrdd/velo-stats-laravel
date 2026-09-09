@@ -4,13 +4,15 @@ namespace App\Domain\Rides\Services;
 
 use App\Domain\Rides\Models\Ride;
 use App\Support\Round;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\DatabaseManager;
 
 /**
  * Aggregates duration and distance statistics across every ride.
  */
 class RideSummaryCalculator
 {
+    public function __construct(private readonly DatabaseManager $database) {}
+
     /**
      * @return array<string, int|float|null>
      */
@@ -20,7 +22,7 @@ class RideSummaryCalculator
             ->select('duration')
             ->addSelect(['distance_meters' => RideRouteSubquery::distanceMeters()]);
 
-        $stats = DB::query()
+        $stats = $this->database->query()
             ->fromSub($rides, 'rides')
             ->selectRaw('COUNT(*) as total_rides')
             ->selectRaw('SUM(duration) as total_duration')

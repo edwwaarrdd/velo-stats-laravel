@@ -8,7 +8,7 @@ use App\Domain\Weather\Services\CachedRideWeatherService;
 use App\Support\Coordinate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
 
 /**
  * Fetches and caches the weather at a ride's origin station and checkin time.
@@ -30,7 +30,7 @@ class CheckRideWeather implements ShouldQueue
         $this->onQueue(self::QUEUE);
     }
 
-    public function handle(CachedRideWeatherService $weatherService): void
+    public function handle(CachedRideWeatherService $weatherService, LoggerInterface $logger): void
     {
         $ride = Ride::query()->findOrFail($this->rideId);
 
@@ -41,7 +41,7 @@ class CheckRideWeather implements ShouldQueue
         $origin = Station::query()->find($ride->origin_station_code);
 
         if ($origin === null) {
-            Log::error("Cannot check weather for ride {$this->rideId}: unknown origin station code {$ride->origin_station_code}");
+            $logger->error("Cannot check weather for ride {$this->rideId}: unknown origin station code {$ride->origin_station_code}");
 
             return;
         }

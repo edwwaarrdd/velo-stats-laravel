@@ -6,8 +6,8 @@ use App\Domain\Weather\Contracts\WeatherService;
 use App\Domain\Weather\ValueObjects\WeatherObservation;
 use App\Support\Coordinate;
 use DateTimeInterface;
+use Illuminate\Http\Client\Factory as HttpClient;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
 class OpenMeteoWeatherService implements WeatherService
@@ -31,14 +31,17 @@ class OpenMeteoWeatherService implements WeatherService
         'weather_code',
     ];
 
-    public function __construct(private readonly string $archiveUrl) {}
+    public function __construct(
+        private readonly HttpClient $http,
+        private readonly string $archiveUrl,
+    ) {}
 
     public function getWeather(Coordinate $location, DateTimeInterface $at): WeatherObservation
     {
         $at = Carbon::instance($at)->utc();
         $date = $at->toDateString();
 
-        $payload = Http::connectTimeout(3)
+        $payload = $this->http->connectTimeout(3)
             ->timeout(10)
             ->get($this->archiveUrl, [
                 'latitude' => $location->lat,

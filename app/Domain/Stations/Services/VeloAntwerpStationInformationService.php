@@ -3,22 +3,25 @@
 namespace App\Domain\Stations\Services;
 
 use App\Domain\Stations\Contracts\StationInformationService;
+use Illuminate\Http\Client\Factory as HttpClient;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
 
 /**
  * Fetches Velo Antwerp station information from the public GBFS feed.
  */
 class VeloAntwerpStationInformationService implements StationInformationService
 {
-    public function __construct(private readonly string $url) {}
+    public function __construct(
+        private readonly HttpClient $http,
+        private readonly string $url,
+    ) {}
 
     /**
      * @return Collection<string, array<string, mixed>>
      */
     public function fetchStations(): Collection
     {
-        $payload = Http::connectTimeout(3)
+        $payload = $this->http->connectTimeout(3)
             ->timeout(10)
             ->get($this->url)
             ->throw()
