@@ -1,7 +1,7 @@
 <?php
 
+use App\Domain\Stations\Models\Station;
 use App\Enums\TravelMode;
-use App\Models\Station;
 use App\Models\StationRoute;
 use App\Services\CachedStationRouteService;
 use Illuminate\Support\Facades\Http;

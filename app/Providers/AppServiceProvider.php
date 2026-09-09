@@ -4,12 +4,13 @@ namespace App\Providers;
 
 use App\Contracts\RideDataSource;
 use App\Contracts\RouteService;
-use App\Contracts\StationInformationService;
 use App\Contracts\WeatherService;
+use App\Domain\Stations\Contracts\StationInformationService;
+use App\Domain\Stations\Services\VeloAntwerpStationInformationService;
 use App\Services\JsonFileRideService;
 use App\Services\OpenMeteoWeatherService;
 use App\Services\OsrmRouteService;
-use App\Services\VeloAntwerpStationInformationService;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,5 +38,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::shouldBeStrict(! $this->app->isProduction());
+
+        /**
+         * Models live in domain folders rather than App\Models, so Laravel's
+         * default guess would look for a factory under a matching sub-namespace
+         * of Database\Factories. Every factory sits directly in that namespace
+         * and is named after its model instead.
+         */
+        Factory::guessFactoryNamesUsing(
+            fn (string $modelName): string => 'Database\\Factories\\'.class_basename($modelName).'Factory',
+        );
     }
 }

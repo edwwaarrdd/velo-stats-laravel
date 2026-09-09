@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domain\Stations\Models\Station;
 use App\Enums\TravelMode;
 use Database\Factories\StationRouteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

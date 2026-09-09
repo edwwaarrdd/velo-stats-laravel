@@ -1,8 +1,8 @@
 <?php
 
+use App\Domain\Stations\Models\Station;
 use App\Enums\TravelMode;
 use App\Models\Ride;
-use App\Models\Station;
 use App\Models\StationRoute;
 use App\Models\WeatherRecord;
 

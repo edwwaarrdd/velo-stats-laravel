@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Domain\Stations\Console\Commands;
 
-use App\Contracts\StationInformationService;
-use App\Models\Station;
+use App\Domain\Stations\Contracts\StationInformationService;
+use App\Domain\Stations\Models\Station;
 use Illuminate\Console\Command;
 
 class LoadStations extends Command

@@ -1,8 +1,8 @@
 <?php
 
+use App\Domain\Stations\Models\Station;
 use App\Jobs\CheckRideWeather;
 use App\Models\Ride;
-use App\Models\Station;
 use App\Models\WeatherRecord;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;

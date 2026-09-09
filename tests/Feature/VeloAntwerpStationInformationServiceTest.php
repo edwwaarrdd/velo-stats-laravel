@@ -1,6 +1,6 @@
 <?php
 
-use App\Contracts\StationInformationService;
+use App\Domain\Stations\Contracts\StationInformationService;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 

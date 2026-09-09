@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Domain\Stations\Models\Station;
 use App\Models\Ride;
-use App\Models\Station;
 use App\Services\CachedRideWeatherService;
 use App\ValueObjects\Coordinate;
 use Illuminate\Contracts\Queue\ShouldQueue;

@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Domain\Stations\Models\Station;
 use App\Enums\TravelMode;
 use App\Models\Ride;
-use App\Models\Station;
 use App\Services\CachedStationRouteService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;

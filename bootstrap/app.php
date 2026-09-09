@@ -10,5 +10,6 @@ return Application::configure(basePath: dirname(__DIR__))
         apiPrefix: '',
         commands: __DIR__.'/../routes/console.php',
     )
+    ->withCommands([__DIR__.'/../app/Domain'])
     ->withMiddleware(function (Middleware $middleware): void {})
     ->withExceptions(function (Exceptions $exceptions): void {})->create();

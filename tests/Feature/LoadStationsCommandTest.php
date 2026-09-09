@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Station;
+use App\Domain\Stations\Models\Station;
 use Illuminate\Support\Facades\Http;
 
 function fakeStationFeed(array $stations): void

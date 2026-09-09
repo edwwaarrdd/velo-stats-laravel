@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Contracts\RouteService;
+use App\Domain\Stations\Models\Station;
 use App\Enums\TravelMode;
-use App\Models\Station;
 use App\Models\StationRoute;
 use App\ValueObjects\Coordinate;
 use App\ValueObjects\Route;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Stations\Services;
 
-use App\Contracts\StationInformationService;
+use App\Domain\Stations\Contracts\StationInformationService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
