@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Domain\Weather\Console\Commands;
 
-use App\Jobs\CheckRideWeather as CheckRideWeatherJob;
+use App\Domain\Weather\Jobs\CheckRideWeather as CheckRideWeatherJob;
 use App\Models\Ride;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;

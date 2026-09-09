@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Domain\Weather\Http\Resources;
 
-use App\Models\WeatherRecord;
+use App\Domain\Weather\Models\WeatherRecord;
 use App\Support\ApiDateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

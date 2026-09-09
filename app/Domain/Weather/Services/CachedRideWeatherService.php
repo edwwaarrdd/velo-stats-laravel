@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Weather\Services;
 
-use App\Contracts\WeatherService;
+use App\Domain\Weather\Contracts\WeatherService;
 use App\Models\Ride;
-use App\Models\WeatherRecord;
+use App\Domain\Weather\Models\WeatherRecord;
 use App\ValueObjects\Coordinate;
-use App\ValueObjects\WeatherObservation;
+use App\Domain\Weather\ValueObjects\WeatherObservation;
 
 /**
  * Fetches the weather for a ride's checkin time and origin station, caching

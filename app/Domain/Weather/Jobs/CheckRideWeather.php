@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Domain\Weather\Jobs;
 
 use App\Domain\Stations\Models\Station;
 use App\Models\Ride;
-use App\Services\CachedRideWeatherService;
+use App\Domain\Weather\Services\CachedRideWeatherService;
 use App\ValueObjects\Coordinate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;

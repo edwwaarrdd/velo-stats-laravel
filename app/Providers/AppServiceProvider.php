@@ -3,13 +3,13 @@
 namespace App\Providers;
 
 use App\Contracts\RideDataSource;
-use App\Contracts\WeatherService;
 use App\Domain\Routing\Contracts\RouteService;
 use App\Domain\Routing\Services\OsrmRouteService;
 use App\Domain\Stations\Contracts\StationInformationService;
 use App\Domain\Stations\Services\VeloAntwerpStationInformationService;
+use App\Domain\Weather\Contracts\WeatherService;
+use App\Domain\Weather\Services\OpenMeteoWeatherService;
 use App\Services\JsonFileRideService;
-use App\Services\OpenMeteoWeatherService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;

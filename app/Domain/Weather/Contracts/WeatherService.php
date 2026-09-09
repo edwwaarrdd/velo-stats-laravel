@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Domain\Weather\Contracts;
 
 use App\ValueObjects\Coordinate;
-use App\ValueObjects\WeatherObservation;
+use App\Domain\Weather\ValueObjects\WeatherObservation;
 use DateTimeInterface;
 
 interface WeatherService

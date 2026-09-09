@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Domain\Weather\Models\WeatherRecord;
 use App\Models\Ride;
-use App\Models\WeatherRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

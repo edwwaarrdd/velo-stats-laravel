@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Weather\Services;
 
-use App\Contracts\WeatherService;
+use App\Domain\Weather\Contracts\WeatherService;
 use App\ValueObjects\Coordinate;
-use App\ValueObjects\WeatherObservation;
+use App\Domain\Weather\ValueObjects\WeatherObservation;
 use DateTimeInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;

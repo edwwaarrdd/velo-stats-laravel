@@ -1,6 +1,6 @@
 <?php
 
-use App\Contracts\WeatherService;
+use App\Domain\Weather\Contracts\WeatherService;
 use App\ValueObjects\Coordinate;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Carbon;

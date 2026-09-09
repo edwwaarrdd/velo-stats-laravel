@@ -3,8 +3,8 @@
 use App\Domain\Routing\Enums\TravelMode;
 use App\Domain\Routing\Models\StationRoute;
 use App\Domain\Stations\Models\Station;
+use App\Domain\Weather\Models\WeatherRecord;
 use App\Models\Ride;
-use App\Models\WeatherRecord;
 
 function ride(array $attributes = []): Ride
 {
