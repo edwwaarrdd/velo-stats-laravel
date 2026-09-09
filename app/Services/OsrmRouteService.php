@@ -26,7 +26,7 @@ class OsrmRouteService implements RouteService
 
         $payload = Http::connectTimeout(3)
             ->timeout(10)
-            ->get("{$this->baseUrl}/route/v1/{$mode->value}/{$coordinates}", ['overview' => 'false'])
+            ->get("{$this->baseUrl}/{$mode->osrmInstancePath()}/route/v1/{$mode->value}/{$coordinates}", ['overview' => 'false'])
             ->throw()
             ->json();
 

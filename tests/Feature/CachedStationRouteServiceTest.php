@@ -13,7 +13,7 @@ beforeEach(function (): void {
 
 it('calculates and caches a route the first time it is asked for', function (): void {
     Http::fake([
-        'router.project-osrm.org/*' => Http::response([
+        'routing.openstreetmap.de/*' => Http::response([
             'code' => 'Ok',
             'routes' => [['distance' => 1502.3, 'duration' => 361.7]],
         ]),
@@ -60,7 +60,7 @@ it('caches each travel mode separately', function (): void {
     ]);
 
     Http::fake([
-        'router.project-osrm.org/*' => Http::response([
+        'routing.openstreetmap.de/*' => Http::response([
             'code' => 'Ok',
             'routes' => [['distance' => 1502.3, 'duration' => 361.7]],
         ]),

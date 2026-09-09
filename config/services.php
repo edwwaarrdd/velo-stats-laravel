@@ -21,7 +21,7 @@ return [
     ],
 
     'osrm' => [
-        'base_url' => env('OSRM_BASE_URL', 'https://router.project-osrm.org'),
+        'base_url' => env('OSRM_BASE_URL', 'https://routing.openstreetmap.de'),
     ],
 
     'open_meteo' => [

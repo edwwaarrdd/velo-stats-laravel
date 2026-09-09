@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 function fakeOsrm(float $distanceMeters = 1502.3): void
 {
-    Http::fake(['router.project-osrm.org/*' => Http::response([
+    Http::fake(['routing.openstreetmap.de/*' => Http::response([
         'code' => 'Ok',
         'routes' => [['distance' => $distanceMeters, 'duration' => 361.7]],
     ])]);
