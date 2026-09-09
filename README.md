@@ -1,58 +1,128 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Velo Stats
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel app for tracking Velo Antwerp bike-share stations, ride history, routing and weather.
 
-## About Laravel
+Ride history is loaded from a JSON export, station information from the public Velo Antwerp GBFS feed. Each ride is
+then enriched in the background: the cycling distance between its two stations comes from the public OSRM routing
+API, and the weather at its origin station and checkin time comes from the free Open-Meteo archive. The API serves
+the combined data as JSON.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Setup
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+docker compose up -d --build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+This starts five services:
+- `app` – Laravel app served on port `8000`
+- `redis` – queue backend
+- `worker` – queue worker for the `default` queue
+- `worker-ride-distance` – worker consuming the `ride_distance_checks` queue one job at a time, so calls to the free
+  routing API are never made concurrently
+- `worker-ride-weather` – worker consuming the `ride_weather_checks` queue one job at a time, so calls to the free
+  Open-Meteo API are never made concurrently
 
-## Contributing
+Every container creates `.env` from `.env.example` on first start, generates an application key, and runs the
+migrations, so no manual setup is needed.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Verify the app is up and running:
 
-## Code of Conduct
+```
+curl http://localhost:8000/_healthcheck
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Should return a 200 OK response.
 
-## Security Vulnerabilities
+Stop everything with:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+docker compose down
+```
 
-## License
+The project directory is bind-mounted into every container, so code edits are picked up without a rebuild.
+Dependencies live in the image rather than the mount, so after changing `composer.json` rebuild and recreate:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+docker compose up -d --build --force-recreate --renew-anon-volumes
+```
+
+### Loading data
+
+A fresh database is empty. Populate it in this order:
+
+```
+docker compose exec app php artisan stations:load
+docker compose exec app php artisan rides:load
+docker compose exec app php artisan rides:check-distances
+docker compose exec app php artisan rides:check-weather
+```
+
+The last two commands queue one job per ride and return immediately. The dedicated workers drain them one call at a
+time, which takes a few minutes for a full ride history.
+
+### Configuration
+
+Environment variables (set in `docker-compose.yml`):
+
+| Variable | Default | Description |
+|---|---|---|
+| `APP_DEBUG` | `false` | Enable Laravel debug mode |
+| `APP_TIMEZONE` | `UTC` | Timezone all times are stored and rendered in |
+| `QUEUE_CONNECTION` | `redis` | Queue driver |
+| `REDIS_HOST` | `redis` | Redis host backing the queues |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Comma-separated origins allowed to call the API |
+
+Data is persisted to a SQLite database at `database/database.sqlite`.
+
+The three upstream endpoints are configured in `config/services.php` and can be overridden with
+`VELO_ANTWERP_STATION_INFORMATION_URL`, `OSRM_BASE_URL` and `OPEN_METEO_ARCHIVE_URL`.
+
+## API Endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/_healthcheck` | Returns `{"message": "ok"}` with a 200 status if the app is up |
+| `GET` | `/rides` | Returns every ride with its basic info, distance (from the cached station route), speed (distance ÷ duration), and cached weather, most recent first |
+| `GET` | `/rides/summary` | Returns aggregate stats across all rides: total rides, total/average/longest/shortest duration, and total/average distance |
+| `GET` | `/rides/cost` | Returns the cost per ride, using the € 58/year subscription price prorated over the date range from the first to the last ride, plus the equivalent cost and money saved versus paying with day passes (€ 5) or week passes (€ 12) instead |
+
+## Console Commands
+
+Run against the running `app` container:
+
+```
+docker compose exec app php artisan <command>
+```
+
+| Command | Description |
+|---|---|
+| `stations:load` | Fetches Velo Antwerp station information from the public GBFS feed and upserts it into the database |
+| `rides:load [--path=PATH]` | Loads ride history from a JSON export (defaults to `data/rides.json`) and upserts it into the database |
+| `tasks:dispatch-test [--message=MSG]` | Dispatches a test job that logs a message from the worker, useful for verifying the queue setup |
+| `rides:check-distances` | Queues a job per unchecked ride to calculate and cache the distance between its origin and destination stations, one at a time via the `ride_distance_checks` queue |
+| `rides:check-weather [--force]` | Queues a job per ride to fetch and cache the biking-relevant weather (temperature, precipitation, wind, cloud cover, humidity, weather code) at its origin station and checkin time from the free Open-Meteo API, one at a time via the `ride_weather_checks` queue. Only unchecked rides are queued by default; pass `--force` to re-fetch weather for every ride |
+
+### Verifying the queue setup
+
+Dispatch a test "hello world" job through the `app` container:
+
+```
+docker compose exec app php artisan tasks:dispatch-test --message "hello world"
+```
+
+Then check the `worker` container's logs to confirm the message was picked up and processed:
+
+```
+docker compose logs worker
+```
+
+You should see a log line containing `hello world` from the worker.
+
+## Tests
+
+```
+php artisan test
+```
+
+The suite runs against an in-memory SQLite database and fakes every third-party call, so it never touches the
+network or the development database.
