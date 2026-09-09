@@ -11,8 +11,12 @@ function ride(array $attributes = []): Ride
     return Ride::factory()->create($attributes);
 }
 
-function bikeRouteBetween(string $originCode, string $destinationCode, float $distanceMeters): StationRoute
-{
+function bikeRouteBetween(
+    string $originCode,
+    string $destinationCode,
+    float $distanceMeters,
+    float $durationSeconds = 300.0,
+): StationRoute {
     Station::factory()->create(['station_id' => $originCode]);
     Station::factory()->create(['station_id' => $destinationCode]);
 
@@ -21,6 +25,7 @@ function bikeRouteBetween(string $originCode, string $destinationCode, float $di
         'destination_station_id' => $destinationCode,
         'mode' => TravelMode::Bike,
         'distance_meters' => $distanceMeters,
+        'duration_seconds' => $durationSeconds,
     ]);
 }
 
@@ -38,8 +43,8 @@ it('returns rides most recent first', function (): void {
     expect(array_column($response->json('results'), 'ride_id'))->toBe([2, 3, 1]);
 });
 
-it('returns every ride field, with distance, speed and weather', function (): void {
-    bikeRouteBetween('021', '041', 1500.0);
+it('returns every ride field, with distance, speed, expected ride time and weather', function (): void {
+    bikeRouteBetween('021', '041', 1500.0, 400.0);
 
     $ride = ride([
         'ride_id' => 73147208,
@@ -93,6 +98,9 @@ it('returns every ride field, with distance, speed and weather', function (): vo
                 'checkin_time' => '2026-09-06T09:05:30Z',
                 'distance_meters' => 1500.0,
                 'speed_kmh' => 9.0,
+                'expected_duration_seconds' => 400.0,
+                'actual_duration_seconds' => 508.0,
+                'duration_vs_expected_seconds' => 108.0,
                 'weather' => [
                     'temperature_c' => 18.0,
                     'apparent_temperature_c' => 17.1,
@@ -119,7 +127,35 @@ it('returns a null distance and speed when no route is cached', function (): voi
 
     expect($result['distance_meters'])->toBeNull()
         ->and($result['speed_kmh'])->toBeNull()
+        ->and($result['expected_duration_seconds'])->toBeNull()
+        ->and($result['duration_vs_expected_seconds'])->toBeNull()
         ->and($result['weather'])->toBeNull();
+});
+
+it('reports a negative delta when the ride beat the expected ride time', function (): void {
+    bikeRouteBetween('021', '041', 1500.0, 400.0);
+    ride([
+        'origin_station_code' => '021',
+        'destination_station_code' => '041',
+        'checkout_time' => '2026-09-06 08:57:00',
+        'checkin_time' => '2026-09-06 09:02:00',
+    ]);
+
+    $result = $this->getJson('/rides')->json('results.0');
+
+    // 300 seconds ridden against the 400 seconds the router predicted.
+    expect($result['actual_duration_seconds'])->toBe(300.0)
+        ->and($result['duration_vs_expected_seconds'])->toBe(-100.0);
+});
+
+it('returns a null expected ride time when no route is cached', function (): void {
+    ride(['origin_station_code' => '021', 'destination_station_code' => '999']);
+
+    $result = $this->getJson('/rides')->json('results.0');
+
+    expect($result['expected_duration_seconds'])->toBeNull()
+        ->and($result['actual_duration_seconds'])->not->toBeNull()
+        ->and($result['duration_vs_expected_seconds'])->toBeNull();
 });
 
 it('ignores routes cached for another travel mode', function (): void {

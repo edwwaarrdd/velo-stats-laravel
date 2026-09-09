@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @mixin Ride
  *
  * @property float|null $distance_meters Distance of the cached bike route between the ride's stations.
+ * @property float|null $expected_duration_seconds Ride time the router predicts for that cached bike route.
  */
 class RideResource extends JsonResource
 {
@@ -36,6 +37,9 @@ class RideResource extends JsonResource
             'checkin_time' => ApiDateTime::datetime($this->checkin_time),
             'distance_meters' => $this->distance_meters,
             'speed_kmh' => $this->speedKmh(),
+            'expected_duration_seconds' => Round::money($this->expected_duration_seconds),
+            'actual_duration_seconds' => $this->actualDurationSeconds(),
+            'duration_vs_expected_seconds' => $this->durationVsExpectedSeconds(),
             'weather' => $this->whenLoaded('weather', fn (): WeatherResource => WeatherResource::make($this->weather)),
         ];
     }
@@ -50,5 +54,31 @@ class RideResource extends JsonResource
         }
 
         return Round::money(($this->distance_meters / 1000) / ($this->duration / 60));
+    }
+
+    /**
+     * The ride time to the second, since `duration` is only stored in whole minutes.
+     */
+    private function actualDurationSeconds(): ?float
+    {
+        if ($this->checkin_time === null || $this->checkout_time === null) {
+            return null;
+        }
+
+        return Round::money($this->checkin_time->getTimestamp() - $this->checkout_time->getTimestamp());
+    }
+
+    /**
+     * Actual minus expected ride time: negative means faster than the router predicted.
+     */
+    private function durationVsExpectedSeconds(): ?float
+    {
+        $actual = $this->actualDurationSeconds();
+
+        if ($actual === null || $this->expected_duration_seconds === null) {
+            return null;
+        }
+
+        return Round::money($actual - $this->expected_duration_seconds);
     }
 }

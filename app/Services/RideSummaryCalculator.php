@@ -18,7 +18,7 @@ class RideSummaryCalculator
     {
         $rides = Ride::query()
             ->select('duration')
-            ->addSelect(['distance_meters' => RideDistanceSubquery::make()]);
+            ->addSelect(['distance_meters' => RideRouteSubquery::distanceMeters()]);
 
         $stats = DB::query()
             ->fromSub($rides, 'rides')
