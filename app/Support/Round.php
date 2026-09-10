@@ -2,16 +2,11 @@
 
 namespace App\Support;
 
-/**
- * Rounds monetary and statistical values to the two decimals the API reports.
- */
 class Round
 {
     public const PRECISION = 2;
 
     /**
-     * Round to two decimals.
-     *
      * This formats rather than calling round(), because round() first nudges
      * the value towards the decimal a human would have typed: it treats
      * 15.995, whose nearest double is really 15.99499999999999957, as an exact

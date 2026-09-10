@@ -46,8 +46,6 @@ class RideResource extends JsonResource
     }
 
     /**
-     * The ride's average speed in km/h, or null when the distance is unknown.
-     *
      * This divides by the exact ride time rather than the `duration` field,
      * which truncates to whole minutes and so overstates the speed.
      */
@@ -62,9 +60,7 @@ class RideResource extends JsonResource
         return Round::money(($this->distance_meters / 1000) / ($seconds / 3600));
     }
 
-    /**
-     * The ride time to the second, since `duration` is only stored in whole minutes.
-     */
+    /** `duration` is only stored in whole minutes, so this recomputes to the second. */
     private function actualDurationSeconds(): ?float
     {
         if ($this->checkin_time === null || $this->checkout_time === null) {
@@ -74,9 +70,7 @@ class RideResource extends JsonResource
         return Round::money($this->checkin_time->getTimestamp() - $this->checkout_time->getTimestamp());
     }
 
-    /**
-     * Actual minus expected ride time: negative means faster than the router predicted.
-     */
+    /** Negative means faster than the router predicted. */
     private function durationVsExpectedSeconds(): ?float
     {
         $actual = $this->actualDurationSeconds();

@@ -10,18 +10,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Psr\Log\LoggerInterface;
 
-/**
- * Calculates and caches the cycling distance between a ride's origin and
- * destination stations.
- */
 class CheckRideDistance implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * The queue this job runs on. A single worker consumes it so the free
-     * routing API is never called concurrently.
-     */
+    /** A single worker consumes this queue, so the free routing API is never called concurrently. */
     public const QUEUE = 'ride_distance_checks';
 
     public function __construct(private readonly int $rideId)

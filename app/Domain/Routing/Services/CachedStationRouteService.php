@@ -9,10 +9,6 @@ use App\Domain\Routing\ValueObjects\Route;
 use App\Domain\Stations\Models\Station;
 use App\Support\Coordinate;
 
-/**
- * Calculates routes between stations, caching results so a route between the
- * same pair of stations and travel mode is only ever calculated once.
- */
 class CachedStationRouteService
 {
     public function __construct(

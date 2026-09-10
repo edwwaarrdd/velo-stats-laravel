@@ -7,14 +7,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
-/**
- * Fetches ride history from a local JSON export of the customer rides.
- */
 class JsonFileRideService implements RideDataSource
 {
-    /**
-     * The format the ride export uses for its checkout and checkin times.
-     */
     private const RIDE_DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     public function __construct(private readonly string $path) {}
@@ -36,8 +30,6 @@ class JsonFileRideService implements RideDataSource
     }
 
     /**
-     * Translate one ride from the export's own shape into database columns.
-     *
      * @param  array<string, mixed>  $ride
      * @return array<string, mixed>
      */

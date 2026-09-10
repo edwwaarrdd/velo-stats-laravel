@@ -6,9 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Psr\Log\LoggerInterface;
 
-/**
- * Logs a message from the worker, so the queue setup can be verified.
- */
+/** Exists so the queue setup can be verified end to end. */
 class LogTestMessage implements ShouldQueue
 {
     use Queueable;

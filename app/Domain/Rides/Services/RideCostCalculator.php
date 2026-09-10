@@ -6,12 +6,7 @@ use App\Domain\Rides\Contracts\RideRepository;
 use App\Support\ApiDateTime;
 use App\Support\Round;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
-/**
- * Works out what the annual subscription costs per ride, and how that compares
- * to paying for the same rides with day or week passes.
- */
 class RideCostCalculator
 {
     public const ANNUAL_SUBSCRIPTION_PRICE_EUR = 58.0;
@@ -29,7 +24,6 @@ class RideCostCalculator
      */
     public function calculate(): array
     {
-        /** @var Collection<int, Carbon> $checkoutTimes */
         $checkoutTimes = $this->rides
             ->checkoutTimes()
             ->map(fn (Carbon $checkoutTime): Carbon => $checkoutTime->utc());

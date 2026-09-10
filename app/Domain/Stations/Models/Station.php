@@ -3,14 +3,12 @@
 namespace App\Domain\Stations\Models;
 
 use App\Domain\Routing\Models\StationRoute;
-use Database\Factories\StationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Station extends Model
 {
-    /** @use HasFactory<StationFactory> */
     use HasFactory;
 
     protected $primaryKey = 'station_id';

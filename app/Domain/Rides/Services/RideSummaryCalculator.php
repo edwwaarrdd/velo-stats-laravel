@@ -6,9 +6,6 @@ use App\Domain\Rides\Contracts\RideRepository;
 use App\Support\Round;
 use Illuminate\Database\DatabaseManager;
 
-/**
- * Aggregates duration and distance statistics across every ride.
- */
 class RideSummaryCalculator
 {
     public function __construct(

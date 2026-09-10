@@ -10,9 +10,6 @@ class CalculateRideCostRequestHandler
 {
     public function __construct(private readonly RideCostCalculator $costCalculator) {}
 
-    /**
-     * The subscription cost per ride, and how it compares to buying passes.
-     */
     public function __invoke(): JsonResponse
     {
         return ApiJson::response($this->costCalculator->calculate());

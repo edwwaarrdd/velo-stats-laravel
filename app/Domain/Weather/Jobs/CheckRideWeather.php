@@ -10,17 +10,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Psr\Log\LoggerInterface;
 
-/**
- * Fetches and caches the weather at a ride's origin station and checkin time.
- */
 class CheckRideWeather implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * The queue this job runs on. A single worker consumes it so the free
-     * Open-Meteo API is never called concurrently.
-     */
+    /** A single worker consumes this queue, so the free Open-Meteo API is never called concurrently. */
     public const QUEUE = 'ride_weather_checks';
 
     public function __construct(

@@ -6,9 +6,6 @@ use App\Domain\Stations\Contracts\StationInformationService;
 use Illuminate\Http\Client\Factory as HttpClient;
 use Illuminate\Support\Collection;
 
-/**
- * Fetches Velo Antwerp station information from the public GBFS feed.
- */
 class VeloAntwerpStationInformationService implements StationInformationService
 {
     public function __construct(
@@ -33,8 +30,6 @@ class VeloAntwerpStationInformationService implements StationInformationService
     }
 
     /**
-     * Translate one station from the feed's own shape into database columns.
-     *
      * @param  array<string, mixed>  $station
      * @return array<string, mixed>
      */

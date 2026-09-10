@@ -15,9 +15,6 @@ class ListRidesRequestHandler
         private readonly RideRouteSubquery $routeSubquery,
     ) {}
 
-    /**
-     * List every ride, most recent first, with its cached distance, expected ride time and weather.
-     */
     public function __invoke(): JsonResponse
     {
         $rides = $this->rides->listWithRouteAndWeather(

@@ -11,9 +11,6 @@ class ListStationsRequestHandler
 {
     public function __construct(private readonly StationRepository $stations) {}
 
-    /**
-     * List every known station with its coordinates.
-     */
     public function __invoke(): JsonResponse
     {
         return ApiJson::response([

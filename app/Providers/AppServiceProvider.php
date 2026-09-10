@@ -57,12 +57,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::shouldBeStrict(! $this->app->isProduction());
 
-        /**
-         * Models live in domain folders rather than App\Models, so Laravel's
-         * default guess would look for a factory under a matching sub-namespace
-         * of Database\Factories. Every factory sits directly in that namespace
-         * and is named after its model instead.
-         */
         Factory::guessFactoryNamesUsing(
             fn (string $modelName): string => 'Database\\Factories\\'.class_basename($modelName).'Factory',
         );

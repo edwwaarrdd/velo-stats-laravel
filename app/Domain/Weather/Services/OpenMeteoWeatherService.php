@@ -13,8 +13,6 @@ use RuntimeException;
 class OpenMeteoWeatherService implements WeatherService
 {
     /**
-     * The biking-relevant hourly variables requested from the archive.
-     *
      * @var list<string>
      */
     public const HOURLY_VARIABLES = [

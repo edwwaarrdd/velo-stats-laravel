@@ -7,11 +7,6 @@ use App\Domain\Routing\Enums\TravelMode;
 use App\Domain\Routing\Models\StationRoute;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
- * Builds the correlated subqueries that resolve a ride's cycling distance and
- * expected ride time from the cached route between its origin and destination
- * stations.
- */
 class RideRouteSubquery
 {
     public function __construct(private readonly StationRouteRepository $stationRoutes) {}
@@ -25,8 +20,6 @@ class RideRouteSubquery
     }
 
     /**
-     * The ride time the router predicts for the route, in seconds.
-     *
      * @return Builder<StationRoute>
      */
     public function expectedDurationSeconds(): Builder

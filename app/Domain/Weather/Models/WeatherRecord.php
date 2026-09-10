@@ -3,7 +3,6 @@
 namespace App\Domain\Weather\Models;
 
 use App\Domain\Rides\Models\Ride;
-use Database\Factories\WeatherRecordFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +16,6 @@ use Illuminate\Support\Carbon;
  */
 class WeatherRecord extends Model
 {
-    /** @use HasFactory<WeatherRecordFactory> */
     use HasFactory;
 
     protected $fillable = [

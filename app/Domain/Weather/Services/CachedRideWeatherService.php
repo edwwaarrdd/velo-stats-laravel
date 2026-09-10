@@ -8,10 +8,6 @@ use App\Domain\Weather\Contracts\WeatherService;
 use App\Domain\Weather\ValueObjects\WeatherObservation;
 use App\Support\Coordinate;
 
-/**
- * Fetches the weather for a ride's checkin time and origin station, caching
- * results so the same ride's weather is only ever fetched once unless forced.
- */
 class CachedRideWeatherService
 {
     public function __construct(

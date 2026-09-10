@@ -3,7 +3,6 @@
 namespace App\Domain\Rides\Models;
 
 use App\Domain\Weather\Models\WeatherRecord;
-use Database\Factories\RideFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -20,7 +19,6 @@ use Illuminate\Support\Carbon;
  */
 class Ride extends Model
 {
-    /** @use HasFactory<RideFactory> */
     use HasFactory;
 
     protected $primaryKey = 'ride_id';

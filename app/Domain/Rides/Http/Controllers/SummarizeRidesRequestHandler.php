@@ -10,9 +10,6 @@ class SummarizeRidesRequestHandler
 {
     public function __construct(private readonly RideSummaryCalculator $summaryCalculator) {}
 
-    /**
-     * Aggregate duration and distance statistics across every ride.
-     */
     public function __invoke(): JsonResponse
     {
         return ApiJson::response($this->summaryCalculator->calculate());

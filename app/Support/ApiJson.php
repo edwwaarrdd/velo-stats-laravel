@@ -4,9 +4,6 @@ namespace App\Support;
 
 use Illuminate\Http\JsonResponse;
 
-/**
- * Builds the application's JSON responses.
- */
 class ApiJson
 {
     /**

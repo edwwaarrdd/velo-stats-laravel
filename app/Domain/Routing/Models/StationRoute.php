@@ -4,14 +4,12 @@ namespace App\Domain\Routing\Models;
 
 use App\Domain\Routing\Enums\TravelMode;
 use App\Domain\Stations\Models\Station;
-use Database\Factories\StationRouteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StationRoute extends Model
 {
-    /** @use HasFactory<StationRouteFactory> */
     use HasFactory;
 
     protected $fillable = [

@@ -5,10 +5,6 @@ namespace App\Support;
 use DateTimeInterface;
 use Illuminate\Support\Carbon;
 
-/**
- * Formats dates and times the way the API renders them: UTC ISO-8601 with a
- * "Z" suffix and no sub-second precision.
- */
 class ApiDateTime
 {
     public const DATETIME_FORMAT = 'Y-m-d\TH:i:s\Z';
