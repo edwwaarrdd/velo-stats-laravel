@@ -1,0 +1,14 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 5
+
+    paths:
+        - app
+        - database
+        - routes
+
+    # The date attributes on the models are declared in PHPDoc rather than natively,
+    # so a null check against one is defensive code, not dead code.
+    treatPhpDocTypesAsCertain: false
