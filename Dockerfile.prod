@@ -13,9 +13,14 @@ FROM php:8.5-fpm
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
+# The extension installer is used rather than docker-php-ext-install, which
+# builds each extension from source against whatever the base image currently
+# ships and stopped being able to build opcache on php:8.5-fpm.
+COPY --from=mlocati/php-extension-installer:latest /usr/bin/install-php-extensions /usr/local/bin/
+
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git unzip libzip-dev \
-    && docker-php-ext-install pcntl zip opcache \
+    && apt-get install -y --no-install-recommends git unzip \
+    && install-php-extensions pcntl zip opcache \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
