@@ -9,7 +9,7 @@
 # The build context is filtered by Dockerfile.prod.dockerignore, which - unlike
 # the development .dockerignore - lets database/database.sqlite through.
 
-FROM php:8.4-fpm
+FROM php:8.5-fpm
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
