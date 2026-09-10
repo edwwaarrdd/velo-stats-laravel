@@ -1,16 +1,18 @@
 <?php
 
-use App\Domain\Rides\Http\Controllers\RideController;
-use App\Domain\Stations\Http\Controllers\StationController;
-use App\Http\Controllers\HealthcheckController;
+use App\Domain\Rides\Http\Controllers\CalculateRideCostRequestHandler;
+use App\Domain\Rides\Http\Controllers\ListRidesRequestHandler;
+use App\Domain\Rides\Http\Controllers\SummarizeRidesRequestHandler;
+use App\Domain\Stations\Http\Controllers\ListStationsRequestHandler;
+use App\Http\Controllers\HealthcheckRequestHandler;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/_healthcheck', HealthcheckController::class);
+Route::get('/_healthcheck', HealthcheckRequestHandler::class);
 
 Route::prefix('rides')->name('rides.')->group(function (): void {
-    Route::get('/', [RideController::class, 'index'])->name('index');
-    Route::get('/summary', [RideController::class, 'summary'])->name('summary');
-    Route::get('/cost', [RideController::class, 'cost'])->name('cost');
+    Route::get('/', ListRidesRequestHandler::class)->name('index');
+    Route::get('/summary', SummarizeRidesRequestHandler::class)->name('summary');
+    Route::get('/cost', CalculateRideCostRequestHandler::class)->name('cost');
 });
 
-Route::get('/stations', [StationController::class, 'index'])->name('stations.index');
+Route::get('/stations', ListStationsRequestHandler::class)->name('stations.index');

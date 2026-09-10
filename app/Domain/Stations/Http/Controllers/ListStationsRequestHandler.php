@@ -2,21 +2,22 @@
 
 namespace App\Domain\Stations\Http\Controllers;
 
+use App\Domain\Stations\Contracts\StationRepository;
 use App\Domain\Stations\Http\Resources\StationResource;
-use App\Domain\Stations\Models\Station;
-use App\Http\Controllers\Controller;
 use App\Support\ApiJson;
 use Illuminate\Http\JsonResponse;
 
-class StationController extends Controller
+class ListStationsRequestHandler
 {
+    public function __construct(private readonly StationRepository $stations) {}
+
     /**
      * List every known station with its coordinates.
      */
-    public function index(): JsonResponse
+    public function __invoke(): JsonResponse
     {
         return ApiJson::response([
-            'results' => StationResource::collection(Station::all())->resolve(),
+            'results' => StationResource::collection($this->stations->all())->resolve(),
         ]);
     }
 }

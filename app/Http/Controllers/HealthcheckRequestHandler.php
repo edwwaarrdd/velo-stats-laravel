@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Support\ApiJson;
 use Illuminate\Http\JsonResponse;
 
-class HealthcheckController extends Controller
+class HealthcheckRequestHandler
 {
     public function __invoke(): JsonResponse
     {

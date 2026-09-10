@@ -8,7 +8,7 @@ paths:
 ## Group application code by domain, not by type
 Application code lives in `app/Domain/<Name>/` (Rides, Stations, Routing, Weather), each holding its own Models, Contracts, Services, Jobs, Console/Commands and Http. New code belongs in a domain, not in `app/Models`, `app/Services` or `app/Contracts` — those folders no longer exist.
 
-Only genuinely cross-cutting code stays outside: `app/Support` (ApiJson, ApiDateTime, Round, Coordinate), the abstract `Controller` and the healthcheck in `app/Http`, and the queue smoke test (`LogTestMessage`, `DispatchTestTask`).
+Only genuinely cross-cutting code stays outside: `app/Support` (ApiJson, ApiDateTime, Round, Coordinate), the healthcheck request handler in `app/Http`, and the queue smoke test (`LogTestMessage`, `DispatchTestTask`).
 
 Two pieces of wiring keep this working, so do not remove them:
 - `bootstrap/app.php` registers `->withCommands([__DIR__.'/../app/Domain'])`. Laravel only auto-discovers commands in `app/Console/Commands`, so without it every domain command silently disappears from `php artisan list`.
