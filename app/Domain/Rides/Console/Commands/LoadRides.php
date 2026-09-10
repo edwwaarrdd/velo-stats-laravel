@@ -3,7 +3,7 @@
 namespace App\Domain\Rides\Console\Commands;
 
 use App\Domain\Rides\Contracts\RideDataSource;
-use App\Domain\Rides\Models\Ride;
+use App\Domain\Rides\Contracts\RideRepository;
 use App\Domain\Rides\Services\JsonFileRideService;
 use Illuminate\Console\Command;
 
@@ -13,8 +13,10 @@ class LoadRides extends Command
 
     protected $description = 'Load customer ride history from a JSON export into the database.';
 
-    public function __construct(private readonly RideDataSource $rides)
-    {
+    public function __construct(
+        private readonly RideDataSource $rides,
+        private readonly RideRepository $rideRepository,
+    ) {
         parent::__construct();
     }
 
@@ -32,10 +34,7 @@ class LoadRides extends Command
         $updatedCount = 0;
 
         foreach ($fetched as $attributes) {
-            $ride = Ride::updateOrCreate(
-                ['ride_id' => $attributes['ride_id']],
-                $attributes,
-            );
+            $ride = $this->rideRepository->updateOrCreate($attributes);
 
             $ride->wasRecentlyCreated ? $createdCount++ : $updatedCount++;
         }

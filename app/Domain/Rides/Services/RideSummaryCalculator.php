@@ -2,7 +2,7 @@
 
 namespace App\Domain\Rides\Services;
 
-use App\Domain\Rides\Models\Ride;
+use App\Domain\Rides\Contracts\RideRepository;
 use App\Support\Round;
 use Illuminate\Database\DatabaseManager;
 
@@ -11,16 +11,18 @@ use Illuminate\Database\DatabaseManager;
  */
 class RideSummaryCalculator
 {
-    public function __construct(private readonly DatabaseManager $database) {}
+    public function __construct(
+        private readonly DatabaseManager $database,
+        private readonly RideRepository $rides,
+        private readonly RideRouteSubquery $routeSubquery,
+    ) {}
 
     /**
      * @return array<string, int|float|null>
      */
     public function calculate(): array
     {
-        $rides = Ride::query()
-            ->select('duration')
-            ->addSelect(['distance_meters' => RideRouteSubquery::distanceMeters()]);
+        $rides = $this->rides->summaryQuery($this->routeSubquery->distanceMeters());
 
         $stats = $this->database->query()
             ->fromSub($rides, 'rides')

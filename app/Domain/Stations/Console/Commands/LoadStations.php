@@ -3,7 +3,7 @@
 namespace App\Domain\Stations\Console\Commands;
 
 use App\Domain\Stations\Contracts\StationInformationService;
-use App\Domain\Stations\Models\Station;
+use App\Domain\Stations\Contracts\StationRepository;
 use Illuminate\Console\Command;
 
 class LoadStations extends Command
@@ -12,8 +12,10 @@ class LoadStations extends Command
 
     protected $description = 'Fetch Velo Antwerp station information and save it to the database.';
 
-    public function __construct(private readonly StationInformationService $stations)
-    {
+    public function __construct(
+        private readonly StationInformationService $stations,
+        private readonly StationRepository $stationRepository,
+    ) {
         parent::__construct();
     }
 
@@ -25,10 +27,7 @@ class LoadStations extends Command
         $updatedCount = 0;
 
         foreach ($fetched as $attributes) {
-            $station = Station::updateOrCreate(
-                ['station_id' => $attributes['station_id']],
-                $attributes,
-            );
+            $station = $this->stationRepository->updateOrCreate($attributes);
 
             $station->wasRecentlyCreated ? $createdCount++ : $updatedCount++;
         }

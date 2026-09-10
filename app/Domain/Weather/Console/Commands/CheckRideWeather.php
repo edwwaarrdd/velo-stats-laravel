@@ -2,10 +2,9 @@
 
 namespace App\Domain\Weather\Console\Commands;
 
-use App\Domain\Rides\Models\Ride;
+use App\Domain\Rides\Contracts\RideRepository;
 use App\Domain\Weather\Jobs\CheckRideWeather as CheckRideWeatherJob;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Builder;
 
 class CheckRideWeather extends Command
 {
@@ -13,17 +12,20 @@ class CheckRideWeather extends Command
 
     protected $description = 'Queue a job per ride to fetch and cache the weather at its origin station and checkin time from Open-Meteo.';
 
+    public function __construct(private readonly RideRepository $rides)
+    {
+        parent::__construct();
+    }
+
     public function handle(): int
     {
         $force = (bool) $this->option('force');
         $dispatchedCount = 0;
 
-        Ride::query()
-            ->unless($force, fn (Builder $query) => $query->whereNull('weather_checked_at'))
-            ->each(function (Ride $ride) use ($force, &$dispatchedCount): void {
-                CheckRideWeatherJob::dispatch($ride->ride_id, $force);
-                $dispatchedCount++;
-            });
+        foreach ($this->rides->forWeatherCheck($force) as $ride) {
+            CheckRideWeatherJob::dispatch($ride->ride_id, $force);
+            $dispatchedCount++;
+        }
 
         $this->info("Dispatched {$dispatchedCount} ride weather check task(s).");
 

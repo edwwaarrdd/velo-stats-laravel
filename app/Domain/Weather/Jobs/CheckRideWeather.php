@@ -2,8 +2,8 @@
 
 namespace App\Domain\Weather\Jobs;
 
-use App\Domain\Rides\Models\Ride;
-use App\Domain\Stations\Models\Station;
+use App\Domain\Rides\Contracts\RideRepository;
+use App\Domain\Stations\Contracts\StationRepository;
 use App\Domain\Weather\Services\CachedRideWeatherService;
 use App\Support\Coordinate;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,15 +30,19 @@ class CheckRideWeather implements ShouldQueue
         $this->onQueue(self::QUEUE);
     }
 
-    public function handle(CachedRideWeatherService $weatherService, LoggerInterface $logger): void
-    {
-        $ride = Ride::query()->findOrFail($this->rideId);
+    public function handle(
+        CachedRideWeatherService $weatherService,
+        LoggerInterface $logger,
+        RideRepository $rides,
+        StationRepository $stations,
+    ): void {
+        $ride = $rides->findOrFail($this->rideId);
 
         if ($ride->weather_checked_at !== null && ! $this->force) {
             return;
         }
 
-        $origin = Station::query()->find($ride->origin_station_code);
+        $origin = $stations->find($ride->origin_station_code);
 
         if ($origin === null) {
             $logger->error("Cannot check weather for ride {$this->rideId}: unknown origin station code {$ride->origin_station_code}");
@@ -48,6 +52,6 @@ class CheckRideWeather implements ShouldQueue
 
         $weatherService->getWeather($ride, new Coordinate($origin->lat, $origin->lon), $this->force);
 
-        $ride->update(['weather_checked_at' => now()]);
+        $rides->markWeatherChecked($ride);
     }
 }

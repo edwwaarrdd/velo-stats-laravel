@@ -2,7 +2,7 @@
 
 namespace App\Domain\Rides\Services;
 
-use App\Domain\Rides\Models\Ride;
+use App\Domain\Rides\Contracts\RideRepository;
 use App\Support\ApiDateTime;
 use App\Support\Round;
 use Illuminate\Support\Carbon;
@@ -22,14 +22,16 @@ class RideCostCalculator
 
     public const WEEK_PASS_PRICE_EUR = 12.0;
 
+    public function __construct(private readonly RideRepository $rides) {}
+
     /**
      * @return array<string, int|float|string|null>
      */
     public function calculate(): array
     {
         /** @var Collection<int, Carbon> $checkoutTimes */
-        $checkoutTimes = Ride::query()
-            ->pluck('checkout_time')
+        $checkoutTimes = $this->rides
+            ->checkoutTimes()
             ->map(fn (Carbon $checkoutTime): Carbon => $checkoutTime->utc());
 
         $totalRides = $checkoutTimes->count();

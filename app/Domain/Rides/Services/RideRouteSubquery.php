@@ -2,6 +2,7 @@
 
 namespace App\Domain\Rides\Services;
 
+use App\Domain\Routing\Contracts\StationRouteRepository;
 use App\Domain\Routing\Enums\TravelMode;
 use App\Domain\Routing\Models\StationRoute;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,12 +14,14 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class RideRouteSubquery
 {
+    public function __construct(private readonly StationRouteRepository $stationRoutes) {}
+
     /**
      * @return Builder<StationRoute>
      */
-    public static function distanceMeters(): Builder
+    public function distanceMeters(): Builder
     {
-        return self::cachedBikeRoute()->select('distance_meters');
+        return $this->cachedBikeRoute()->select('distance_meters');
     }
 
     /**
@@ -26,17 +29,17 @@ class RideRouteSubquery
      *
      * @return Builder<StationRoute>
      */
-    public static function expectedDurationSeconds(): Builder
+    public function expectedDurationSeconds(): Builder
     {
-        return self::cachedBikeRoute()->select('duration_seconds');
+        return $this->cachedBikeRoute()->select('duration_seconds');
     }
 
     /**
      * @return Builder<StationRoute>
      */
-    private static function cachedBikeRoute(): Builder
+    private function cachedBikeRoute(): Builder
     {
-        return StationRoute::query()
+        return $this->stationRoutes->query()
             ->whereColumn('origin_station_id', 'rides.origin_station_code')
             ->whereColumn('destination_station_id', 'rides.destination_station_code')
             ->where('mode', TravelMode::Bike)

@@ -3,8 +3,8 @@
 namespace App\Domain\Routing\Services;
 
 use App\Domain\Routing\Contracts\RouteService;
+use App\Domain\Routing\Contracts\StationRouteRepository;
 use App\Domain\Routing\Enums\TravelMode;
-use App\Domain\Routing\Models\StationRoute;
 use App\Domain\Routing\ValueObjects\Route;
 use App\Domain\Stations\Models\Station;
 use App\Support\Coordinate;
@@ -15,15 +15,14 @@ use App\Support\Coordinate;
  */
 class CachedStationRouteService
 {
-    public function __construct(private readonly RouteService $routeService) {}
+    public function __construct(
+        private readonly RouteService $routeService,
+        private readonly StationRouteRepository $stationRoutes,
+    ) {}
 
     public function getRoute(Station $origin, Station $destination, TravelMode $mode): Route
     {
-        $cached = StationRoute::query()
-            ->where('origin_station_id', $origin->station_id)
-            ->where('destination_station_id', $destination->station_id)
-            ->where('mode', $mode)
-            ->first();
+        $cached = $this->stationRoutes->findCachedRoute($origin->station_id, $destination->station_id, $mode);
 
         if ($cached !== null) {
             return new Route($cached->distance_meters, $cached->duration_seconds);
@@ -35,7 +34,7 @@ class CachedStationRouteService
             $mode,
         );
 
-        StationRoute::create([
+        $this->stationRoutes->create([
             'origin_station_id' => $origin->station_id,
             'destination_station_id' => $destination->station_id,
             'mode' => $mode,

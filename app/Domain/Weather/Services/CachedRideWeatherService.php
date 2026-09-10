@@ -3,8 +3,8 @@
 namespace App\Domain\Weather\Services;
 
 use App\Domain\Rides\Models\Ride;
+use App\Domain\Weather\Contracts\WeatherRecordRepository;
 use App\Domain\Weather\Contracts\WeatherService;
-use App\Domain\Weather\Models\WeatherRecord;
 use App\Domain\Weather\ValueObjects\WeatherObservation;
 use App\Support\Coordinate;
 
@@ -14,11 +14,14 @@ use App\Support\Coordinate;
  */
 class CachedRideWeatherService
 {
-    public function __construct(private readonly WeatherService $weatherService) {}
+    public function __construct(
+        private readonly WeatherService $weatherService,
+        private readonly WeatherRecordRepository $weatherRecords,
+    ) {}
 
     public function getWeather(Ride $ride, Coordinate $location, bool $force = false): WeatherObservation
     {
-        $cached = WeatherRecord::query()->where('ride_id', $ride->ride_id)->first();
+        $cached = $this->weatherRecords->findByRideId($ride->ride_id);
 
         if ($cached !== null && ! $force) {
             return new WeatherObservation(
@@ -39,10 +42,7 @@ class CachedRideWeatherService
 
         $observation = $this->weatherService->getWeather($location, $ride->checkin_time);
 
-        WeatherRecord::updateOrCreate(
-            ['ride_id' => $ride->ride_id],
-            $observation->toAttributes(),
-        );
+        $this->weatherRecords->updateOrCreate($ride->ride_id, $observation->toAttributes());
 
         return $observation;
     }
