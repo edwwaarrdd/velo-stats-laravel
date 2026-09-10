@@ -31,22 +31,33 @@ class JsonFileRideService implements RideDataSource
         $payload = json_decode((string) file_get_contents($this->path), associative: true, flags: JSON_THROW_ON_ERROR);
 
         return collect($payload['data']['CustomerRides'])
-            ->map(fn (array $ride): array => [
-                'ride_id' => (int) $ride['id'],
-                'account_id' => (int) $ride['accountId'],
-                'status' => (string) $ride['status'],
-                'duration' => (int) $ride['duration'],
-                'bike_number' => (string) $ride['bikeNumber'],
-                'origin_station_code' => (string) $ride['originStationCode'],
-                'origin_station' => (string) $ride['originStation'],
-                'origin_slot_id' => (string) $ride['originSlotId'],
-                'checkout_time' => $this->parseDateTime($ride['checkoutTime']),
-                'destination_station_code' => (string) $ride['destinationStationCode'],
-                'destination_station' => (string) $ride['destinationStation'],
-                'destination_slot_id' => (string) $ride['destinationSlotId'],
-                'checkin_time' => $this->parseDateTime($ride['checkinTime']),
-            ])
-            ->keyBy('ride_id');
+            ->map($this->toAttributes(...))
+            ->keyBy(fn (array $ride): int => (int) $ride['ride_id']);
+    }
+
+    /**
+     * Translate one ride from the export's own shape into database columns.
+     *
+     * @param  array<string, mixed>  $ride
+     * @return array<string, mixed>
+     */
+    private function toAttributes(array $ride): array
+    {
+        return [
+            'ride_id' => (int) $ride['id'],
+            'account_id' => (int) $ride['accountId'],
+            'status' => (string) $ride['status'],
+            'duration' => (int) $ride['duration'],
+            'bike_number' => (string) $ride['bikeNumber'],
+            'origin_station_code' => (string) $ride['originStationCode'],
+            'origin_station' => (string) $ride['originStation'],
+            'origin_slot_id' => (string) $ride['originSlotId'],
+            'checkout_time' => $this->parseDateTime((string) $ride['checkoutTime']),
+            'destination_station_code' => (string) $ride['destinationStationCode'],
+            'destination_station' => (string) $ride['destinationStation'],
+            'destination_slot_id' => (string) $ride['destinationSlotId'],
+            'checkin_time' => $this->parseDateTime((string) $ride['checkinTime']),
+        ];
     }
 
     private function parseDateTime(string $value): Carbon

@@ -7,7 +7,14 @@ use Database\Factories\WeatherRecordFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * Larastan reads the scalar casts below, but not the `datetime` one, so the
+ * date attribute is spelled out here.
+ *
+ * @property Carbon $observed_at
+ */
 class WeatherRecord extends Model
 {
     /** @use HasFactory<WeatherRecordFactory> */

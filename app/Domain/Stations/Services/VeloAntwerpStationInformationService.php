@@ -28,17 +28,28 @@ class VeloAntwerpStationInformationService implements StationInformationService
             ->json();
 
         return collect($payload['data']['stations'])
-            ->map(fn (array $station): array => [
-                'station_id' => (string) $station['station_id'],
-                'name' => (string) $station['name'],
-                'short_name' => (string) $station['short_name'],
-                'lat' => (float) $station['lat'],
-                'lon' => (float) $station['lon'],
-                'address' => (string) $station['address'],
-                'post_code' => (string) $station['post_code'],
-                'rental_methods' => array_values($station['rental_methods'] ?? []),
-                'capacity' => (int) ($station['capacity'] ?? 0),
-            ])
-            ->keyBy('station_id');
+            ->map($this->toAttributes(...))
+            ->keyBy(fn (array $station): string => (string) $station['station_id']);
+    }
+
+    /**
+     * Translate one station from the feed's own shape into database columns.
+     *
+     * @param  array<string, mixed>  $station
+     * @return array<string, mixed>
+     */
+    private function toAttributes(array $station): array
+    {
+        return [
+            'station_id' => (string) $station['station_id'],
+            'name' => (string) $station['name'],
+            'short_name' => (string) $station['short_name'],
+            'lat' => (float) $station['lat'],
+            'lon' => (float) $station['lon'],
+            'address' => (string) $station['address'],
+            'post_code' => (string) $station['post_code'],
+            'rental_methods' => array_values((array) ($station['rental_methods'] ?? [])),
+            'capacity' => (int) ($station['capacity'] ?? 0),
+        ];
     }
 }

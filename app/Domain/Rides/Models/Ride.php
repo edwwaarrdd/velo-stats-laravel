@@ -7,7 +7,17 @@ use Database\Factories\RideFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
+/**
+ * Larastan reads the scalar casts below, but not the `datetime` ones, so the
+ * date attributes are spelled out here.
+ *
+ * @property Carbon $checkout_time
+ * @property Carbon $checkin_time
+ * @property Carbon|null $distance_checked_at
+ * @property Carbon|null $weather_checked_at
+ */
 class Ride extends Model
 {
     /** @use HasFactory<RideFactory> */
