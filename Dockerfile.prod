@@ -1,0 +1,46 @@
+# Production image: PHP-FPM behind nginx, which is how Laravel is actually
+# deployed, in place of the single-process `php artisan serve` used in
+# development.
+#
+# Also different from the development image: dev dependencies are omitted, the
+# autoloader is authoritative, OPcache is on with timestamp checks off, and the
+# seeded SQLite database is baked in rather than bind-mounted.
+#
+# The build context is filtered by Dockerfile.prod.dockerignore, which - unlike
+# the development .dockerignore - lets database/database.sqlite through.
+
+FROM php:8.4-fpm
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git unzip libzip-dev \
+    && docker-php-ext-install pcntl zip opcache \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --no-scripts --no-autoloader --no-dev --prefer-dist
+
+COPY . .
+
+# --classmap-authoritative removes the filesystem lookup that the autoloader
+# otherwise performs for every class it has not seen.
+RUN composer dump-autoload --optimize --classmap-authoritative --no-dev
+
+COPY database/database.sqlite /app/database/database.sqlite
+
+COPY docker/opcache.ini /usr/local/etc/php/conf.d/zz-opcache.ini
+COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/zz-www.conf
+COPY docker/entrypoint-prod.sh /usr/local/bin/entrypoint-prod
+RUN chmod +x /usr/local/bin/entrypoint-prod
+
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache /app/database
+
+EXPOSE 9000
+
+ENTRYPOINT ["entrypoint-prod"]
+CMD ["php-fpm", "--nodaemonize"]
